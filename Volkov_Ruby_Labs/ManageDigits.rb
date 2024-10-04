@@ -28,7 +28,13 @@ def findMinnechet(written_number)
     min
 end
 
-#взаимно простые
+def nod(a, b):
+  if b == 0:
+      return a
+  else:
+      return nod(b, a % b)  
+
+#сумма взаимно простые
 def checkproste(written_number)
     number=written_number
 
@@ -56,42 +62,21 @@ def checkproste(written_number)
     end
     end
 
-    # Отбираем взаимно простые делители
+    # Отбираем взаимно простые делители 
     co_simple_dividers_array = []
     for i in 0...(dividers_array.length)
     d = dividers_array[i]
-
-    a = d
-    b = sum_digits
-    while b != 0
-        swap = b
-        b = a % b
-        a = swap
-    end
-    nod_sum = a
-
-    a = d
-    b = multiply_Digits
-    while b != 0
-        swap = b
-        b = a % b
-        a = swap
-    end
-    nod_multiply = a
-
-    if nod_sum == 1 && nod_multiply != 1
-        co_simple_dividers_array.push(d)
-    end
-    end
+        if nod(d, sum_digits) == 1 && nod(d, product_digits) != 1
+          co_simple_dividers_array.push(d)
+      end
+    end 
 
     final_sum = 0
     for i in 0...(co_simple_dividers_array.length)
     final_sum += co_simple_dividers_array[i]
     end
-
     final_sum
 end
-
 
 answer1=findDividers(written_number)
 answer2=findMinnechet(written_number)
