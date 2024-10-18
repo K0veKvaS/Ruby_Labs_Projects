@@ -1,4 +1,4 @@
-puts "теперь напишите число классное математическое: " #целое положительное хотя бы двухзначное
+puts "теперь напишите число классное математическое: " 
 written_number = gets.chomp.to_i
 
 #функция нахождения количество делителей делящихся на 3
@@ -13,7 +13,6 @@ def findDividers(written_number)
     end
      count
 end
-
 
 # найти минимальную нечетную цифру числа
 def findMinnechet(written_number)
@@ -32,7 +31,7 @@ def nod(a, b):
   if b == 0:
       return a
   else:
-      return nod(b, a % b)  
+      return nod(b, a % b)
 
 #сумма взаимно простые
 def checkproste(written_number)
