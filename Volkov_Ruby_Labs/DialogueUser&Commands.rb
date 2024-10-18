@@ -1,6 +1,6 @@
 puts "hello world"
 puts "who are u?"
-
+ 
 user_name=ENV['USER']
 puts "Greetings, #{user_name}. Whats your favourite program language?"
 fav_lang=gets.chomp
