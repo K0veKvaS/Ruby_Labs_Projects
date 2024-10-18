@@ -13,7 +13,7 @@ def findDividers(written_number)
     end
      count
 end
-
+ 
 # найти минимальную нечетную цифру числа
 def findMinnechet(written_number)
         min=10000
