@@ -17,7 +17,7 @@ def findmax(array)
   end
   max
 end
-
+ 
 def firstpositive(array)
   for i in 0...array.length do
       if array[i]>0 then 
