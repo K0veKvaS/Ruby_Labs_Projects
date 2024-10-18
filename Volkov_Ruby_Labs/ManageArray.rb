@@ -24,17 +24,18 @@ def firstpositive(array)
           return array[i]
       end
   end 
+nil
 end
 
 
 def method_chooser(method_number, array_digits)
   case method_number
   when 1
-    findMin(array_digits)
+    puts "минимальный элемнет: #{findMin(array_digits)}"
   when 2
-    findmax(array_digits)
+    puts "максимальный элемент массива: #{findmax(array_digits)}"
   when 3
-      firstpositive(array_digits)
+    puts "первый положительный элемент массива: #{firstpositive(array_digits)}"
   else
     puts "ошибка. Выберите от 1 до 3."
     nil
@@ -53,24 +54,12 @@ rescue StandardError => e
   nil
 end
 
+method_chooser_input = ARGV[0].to_i
+filePath=ARGV[1]
 
-array=[1,2,3,4,5,6,7,8,9,10]
-answer4=findMin(array)
-answer5=findmax(array)
-answer6=firstpositive(array)
-
-puts "минимальный элемент массива: #{answer4}"
-puts "максимальный элемент массива: #{answer5}"
-puts "первый положительный элемент массива: #{answer6}"
-
-puts "выберите метод для преобразования массива(от 1 до 3):"
-methodChooser = gets.chomp.to_i
-
-puts "теперь запишите путь файла, откуда будет считываться массив: "
-filePath = gets.chomp
+ARGV.clear
 
 array_digits = readFile(filePath)
 if array_digits
-    result = method_chooser(methodChooser, array_digits)
-    puts "Результат: #{result.inspect}" if result
+    result = method_chooser(method_chooser_input, array_digits)
   end
