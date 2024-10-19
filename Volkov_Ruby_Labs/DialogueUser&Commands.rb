@@ -1,7 +1,13 @@
 puts "hello world"
 puts "who are u?"
- 
-user_name=ENV['USER']
+
+user_name = ARGV[0]
+if user_name.nil?
+  puts "Имя не было указано. Повторите запрос"
+  exit 1
+end
+ARGV.clear
+
 puts "Greetings, #{user_name}. Whats your favourite program language?"
 fav_lang=gets.chomp
 
