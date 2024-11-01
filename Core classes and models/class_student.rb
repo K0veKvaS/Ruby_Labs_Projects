@@ -1,16 +1,17 @@
 class Student
-  attr_accessor :id, :first_name, :second_name, :third_name, :telegram, :email, :git
-  attr_reader :telephone
+  attr_reader :id, :first_name, :second_name, :third_name, :telegram, :email, :git
 
   def initialize(first_name:, second_name:, third_name:, id: nil, telephone: nil, telegram: nil, email: nil, git: nil)
-    @first_name = first_name if self.class.valid_name?(first_name)
-    @second_name = second_name if self.class.valid_name?(second_name)
-    @third_name = third_name
-    @id = id
+    self.first_name = first_name if self.class.valid_name?(first_name)
+    self.second_name = second_name if self.class.valid_name?(second_name)
+    self.third_name = third_name if self.class.valid_name?(third_name)
+    self.id = id 
     self.telephone = telephone if self.class.valid_telephone?(telephone)
     self.telegram = telegram if self.class.valid_telegram?(telegram)
     self.email = email if self.class.valid_email?(email)
     self.git = git if self.class.valid_git?(git)
+
+    set_contacts(telephone: telephone, telegram: telegram, email: email, git: git)
   end
 
   def to_s
@@ -25,6 +26,13 @@ class Student
     Git = #{@git || 'Пусто'}
     "
   end 
+
+  def set_contacts(telephone: nil, telegram: nil, email: nil, git: nil)
+    self.telephone = telephone
+    self.telegram = telegram
+    self.email = email
+    self.git = git
+  end
 
   def self.valid_telephone?(telephone)
     telephone_regex = /^+d{11}$/
@@ -80,6 +88,14 @@ class Student
     end 
   end
 
+  def third_name=(third_name)
+    if self.class.valid_name?(third_name)
+      @third_name = third_name
+    else
+      raise ArgumentError, "Некорректная фамилия"
+    end 
+  end
+
   def telegram=(telegram)
     if self.class.valid_telegram?(telegram)
       @telegram = telegram
@@ -104,7 +120,10 @@ class Student
     end 
   end
 
-  
+  def id=(id)
+    @id = id.to_s =~ /^\d+$/ ? id : nil
+  end
+
   def validate
     validate_git_presence && validate_contact_presence
   end
