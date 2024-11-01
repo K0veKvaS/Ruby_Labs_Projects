@@ -104,6 +104,21 @@ class Student
     end 
   end
 
+  
+  def validate
+    validate_git_presence && validate_contact_presence
+  end
+
+  private
+
+  def validate_git_presence
+    !@git.nil?
+  end
+
+  def validate_contact_presence
+    !@telephone.nil? || !@telegram.nil? || !@email.nil?
+  end
+
   def info
     "ID: #{@id || 'Не указано'}, ФИО: #{@first_name} #{@second_name} #{@third_name}, Контактная информация: Телефон: #{@telephone || 'Не указано'}, Telegram: #{@telegram || 'Не указано'}, Email: #{@email || 'Не указано'}, Git: #{@git || 'Не указано'}"
   end
