@@ -1,144 +1,61 @@
 class Student
-  attr_reader :id, :first_name, :second_name, :third_name, :telegram, :email, :git
-
-  def initialize(first_name:, second_name:, third_name:, id: nil, telephone: nil, telegram: nil, email: nil, git: nil)
-    self.first_name = first_name if self.class.valid_name?(first_name)
-    self.second_name = second_name if self.class.valid_name?(second_name)
-    self.third_name = third_name if self.class.valid_name?(third_name)
-    self.id = id 
-    self.telephone = telephone if self.class.valid_telephone?(telephone)
-    self.telegram = telegram if self.class.valid_telegram?(telegram)
-    self.email = email if self.class.valid_email?(email)
-    self.git = git if self.class.valid_git?(git)
-
-    set_contacts(telephone: telephone, telegram: telegram, email: email, git: git)
-  end
-
-  def to_s
-    "
-    ID = #{@id || 'Пусто'}
-    Surname = #{@second_name}
-    Name = #{@first_name}
-    Third_name = #{@third_name}
-    Telephone = #{@telephone || 'Пусто'}
-    Telegram = #{@telegram || 'Пусто'}
-    Email = #{@email || 'Пусто'}
-    Git = #{@git || 'Пусто'}
-    "
-  end 
-
-  def set_contacts(telephone: nil, telegram: nil, email: nil, git: nil)
-    self.telephone = telephone
-    self.telegram = telegram
-    self.email = email
+  attr_reader :id, :first_name, :second_name, :third_name, :telephone, :telegram, :email, :git
+  def initialize(first_name:, second_name:, third_name:, id: nil, git:)
+    self.first_name = first_name 
+    self.second_name = second_name 
+    self.third_name = third_name 
+    self.id = id
     self.git = git
   end
-
-  def self.valid_telephone?(telephone)
-    telephone_regex = /^+d{11}$/
-    return true if telephone.nil?
-    telephone =~ telephone_regex
+    def set_contacts(telephone: nil, telegram: nil, email: nil)
+    self.telephone=(telephone) 
+    self.telegram=(telegram) 
+    self.email=(email) 
   end
 
-  def self.valid_name?(name)
-    name_regex = /^[A-Za-zА-Яа-яЁё'-]+$/
-    return true if name.nil?
-    name =~ name_regex
+  def info 
+    "ID: #{@id || 'Не указано'}, ФИО: #{@first_name} #{@second_name} #{@third_name}, Телефон: #{@telephone}, Telegram: #{@telegram}, Email: #{@email}, Git: #{@git}"
   end
-
-  def self.valid_telegram?(telegram)
-    telegram_regex = /^@[a-zA-Z0-9_]{5,32}$/
-    return true if telegram.nil?
-    telegram =~ telegram_regex
-  end
-
-  def self.valid_email?(email)
-    email_regex = /A[^@s]+@([^@s]+.)+[^@s]+z/
-    return true if email.nil?
-    email =~ email_regex
-  end
-
-  def self.valid_git?(git)
-    git_regex = /[a-zA-Z0-9_.+-]+$/
-    return true if git.nil?
-    git =~ git_regex
-  end
-
-  def telephone=(telephone)
-    if self.class.valid_telephone?(telephone)
-      @telephone = telephone
-    else
-      raise ArgumentError, "Некорректный номер телефона"
-    end 
-  end
-
-  def first_name=(first_name)
-    if self.class.valid_name?(first_name)
-      @first_name = first_name
-    else
-      raise ArgumentError, "Некорректное имя"
-    end 
-  end
-
-  def second_name=(second_name)
-    if self.class.valid_name?(second_name)
-      @second_name = second_name
-    else
-      raise ArgumentError, "Некорректная фамилия"
-    end 
-  end
-
-  def third_name=(third_name)
-    if self.class.valid_name?(third_name)
-      @third_name = third_name
-    else
-      raise ArgumentError, "Некорректная фамилия"
-    end 
-  end
-
-  def telegram=(telegram)
-    if self.class.valid_telegram?(telegram)
-      @telegram = telegram
-    else
-      raise ArgumentError, "Некорректный Telegram"
-    end 
-  end
-
-  def email=(email)
-    if self.class.valid_email?(email)
-      @email = email
-    else
-      raise ArgumentError, "Некорректный Email"
-    end 
-  end
-
-  def git=(git)
-    if self.class.valid_git?(git)
-      @git = git
-    else
-      raise ArgumentError, "Некорректная ссылка на Git"
-    end 
-  end
-
-  def id=(id)
-    @id = id.to_s =~ /^\d+$/ ? id : nil
-  end
-
+  
   def validate
-    validate_git_presence && validate_contact_presence
-  end
-
-  private
-
-  def validate_git_presence
-    !@git.nil?
+    validate_contact_presence
   end
 
   def validate_contact_presence
     !@telephone.nil? || !@telegram.nil? || !@email.nil?
   end
 
-  def info
-    "ID: #{@id || 'Не указано'}, ФИО: #{@first_name} #{@second_name} #{@third_name}, Контактная информация: Телефон: #{@telephone || 'Не указано'}, Telegram: #{@telegram || 'Не указано'}, Email: #{@email || 'Не указано'}, Git: #{@git || 'Не указано'}"
+  private
+
+  def telephone=(telephone)
+    @telephone = telephone.to_s =~ /^\+\d{11}$/ ? third_name : nil
+  end
+
+  def first_name=(first_name)
+    @first_name = first_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? first_name : nil
+  end
+
+  def second_name=(second_name)
+    @second_name = second_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? second_name : nil
+  end
+
+  def third_name=(third_name)
+    @third_name = third_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? third_name : nil
+  end
+
+  def telegram=(telegram)
+    @telegram = telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/ ? telegram : nil
+  end
+
+  def email=(email)
+    @email = email.to_s =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]{2,})\z/ ? email : nil
+  end
+
+  def git=(git)
+    @git = git.to_s =~ /^[a-zA-Z0-9_.+-]+$/ ? git : nil
+  end
+
+  def id=(id)
+    @id = id.to_s =~ /^\d+$/ ? id : nil
   end
 end
