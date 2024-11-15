@@ -13,7 +13,6 @@ class Student < Person
     self.telephone=(telephone) 
     self.telegram=(telegram) 
     self.email=(email)
-    @contact = set_contact(telephone, telegram, email) 
   end
 
   def info 
