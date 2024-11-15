@@ -1,52 +1,48 @@
 require_relative 'Person'
 
 class Student_short < Person
-  attr_accessor :id
+  attr_reader :id, :surname_initials, :git, :contact
 
-  def self.from_student(student)
-    student_short = new(
-      second_name: student.surname_initials.split[0],
-      first_name: student.surname_initials.split[1][0],
-      third_name: student.surname_initials.split[1][2],
-      git: student.git,
-      telephone: student.telephone,
-      telegram: student.telegram,
-      email: student.email
-    )
-    student_short
+  def initialize(student)
+    @id = student.id
+    @surname_initials = student.surname_initials
+    @git = student.git
+    @contact = student.contact_choose
   end
 
-  def self.from_info_string(id, info_string)
-    second_name, first_name, third_name, telephone, telegram, email, git = parse_info_string(info_string)
-
-    student_short = new(
-      second_name: second_name,
-      first_name: first_name,
-      third_name: third_name,
-      git: git,
-      telephone: telephone,
-      telegram: telegram,
-      email: email
-    )
-    student_short.id = id
-    student_short
+  def initialize_from_info_string(id, info_string)
+    details = parse_info_string(info_string)
+    @id = id
+    @surname_initials = "#{details[:second_name]} #{details[:first_name][0]}.#{details[:third_name][0]}."
+    @git = details[:git]
+    @contact = contact_choose(details)
   end
 
-  def self.parse_info_string(info_string)
-    details = info_string.split(';')
-    details.map(&:strip) 
+  def getInfo
+    "#{@surname_initials}; Git: #{@git}; Contact: #{@contact}"
   end
 
-  def to_s
-    output = []
-    output << "ID: #{@id}" if @id
-    output << super
-    output.join("; ")
+  private
+
+  def parse_info_string(info_string)
+    details = info_string.split(';').map(&:strip)
+    {
+      first_name: details[0],
+      second_name: details[1],
+      third_name: details[2],
+      git: details[3]
+    }
   end
 
-  private_class_method :new
-
-  def initialize(second_name:, first_name:, third_name:, git:, telephone: nil, telegram: nil, email: nil)
-    super(second_name: second_name, first_name: first_name, third_name: third_name, git: git, telephone: telephone, telegram: telegram, email: email)
+  def contact_choose(details)
+    if details[:telephone]
+      "telephone: #{details[:telephone]}"
+    elsif details[:telegram]
+      "Telegram: #{details[:telegram]}"
+    elsif details[:email]
+      "Email: #{details[:email]}"
+    else
+      "Ни один из контактов не указан."
+    end
   end
 end
