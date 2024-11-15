@@ -7,43 +7,33 @@ class Person
     set_contacts(telephone: telephone, telegram: telegram, email: email)
   end
 
-  def select_contact(telephone, telegram, email)
-    contact_info = telephone || telegram || email || "Не указано"
-    case contact_info
-    when telephone
-      "Telephone: #{telephone}"
-    when telegram
+  def contact_choose
+    if telephone
+      "telephone: #{telephone}"
+    elsif telegram
       "Telegram: #{telegram}"
-    when email
+    elsif email
       "Email: #{email}"
     else
-      "Не указано"
+      "Ни один из контактов не указан."
     end
   end
 
-  def to_s
-    output = []
-    output << "#{@surname_initials}"
-    output << "Git: #{@git}" 
-    output << "Контакт: #{@contact}"
-    output.join("; ")
+  def info 
+    "ФИО: #{surname_initials}, Контакты: #{@contact}, Git: #{@git}"
   end
 
   def set_contacts(telephone: nil, telegram: nil, email: nil)
     self.telephone = telephone
     self.telegram = telegram
     self.email = email
-    @contact = select_contact(telephone, telegram, email)
+    @contact = contact_choose(telephone, telegram, email)
   end
 
   private
 
-  def telephone=(telephone)
-    if telephone =~ /^\+\d{11}$/
-      @telephone = telephone
-    else
-      raise ArgumentError.new("Некорректный номер телефона")
-    end
+  def self.telephone?(telephone)
+    @telephone = telephone.to_s =~ /^\+\d{11}$/ ? telephone : nil
   end
 
   def telegram=(telegram)
