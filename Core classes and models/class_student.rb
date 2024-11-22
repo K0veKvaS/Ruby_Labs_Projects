@@ -1,83 +1,54 @@
-require_relative 'Person'
+require_relative 'person'
 
 class Student < Person
-  attr_reader :id, :first_name, :second_name, :third_name, :telephone, :telegram, :email, :git
-  def initialize(first_name:, second_name:, third_name:, id: nil, git:)
-    self.first_name = first_name 
-    self.second_name = second_name 
-    self.third_name = third_name 
+  attr_accessor :id, :git
+
+  def initialize(id:, second_name:, first_name:, last_name: nil, telephone: nil, telegram: nil, email: nil, git:)
+    super(second_name: second_name, first_name: first_name, last_name: last_name)
     self.id = id
+    set_contacts(telephone: telephone, telegram: telegram, email: email)
     self.git = git
   end
-    def set_contacts(telephone: nil, telegram: nil, email: nil)
-    self.telephone=(telephone) 
-    self.telegram=(telegram) 
-    self.email=(email)
+  def id=(id)
+    @id = id.to_s =~ /^\d+$/ ? id : nil
   end
 
-  def info 
-    "ID: #{@id || 'Не указано'}, ФИО: #{@first_name} #{@second_name} #{@third_name}, Контакты: #{@contact}, Git: #{@git}"
+  def set_contacts(telephone: nil, telegram: nil, email: nil)
+    self.telephone = telephone
+    @telegram = telegram
+    @email = email
+    validate_contacts
   end
-
-  def getInfo
-    "#{surname_initials}; Git: #{@git}; Contact: #{contact_choose}"
-  end
-
-  def surname_initials
-    "#{@second_name} #{@first_name[0]}.#{@third_name[0]}."
-  end
-
-  def contact_choose
-    if @telephone
-      "telephone: #{@telephone}"
-    elsif @telegram
-      "Telegram: #{@telegram}"
-    elsif @email
-      "Email: #{@email}"
-    else
-      "Ни один из контактов не указан."
-    end
-  end
-  
-  def validate
-    validate_contact_presence
-  end
-
-  def validate_contact_presence
-    !@telephone.nil? || !@telegram.nil? || !@email.nil?
-  end
-
-  private
 
   def telephone=(telephone)
-    @telephone = telephone.to_s =~ /^\+\d{11}$/ ? third_name : nil
-  end
-
-  def first_name=(first_name)
-    @first_name = first_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? first_name : nil
-  end
-
-  def second_name=(second_name)
-    @second_name = second_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? second_name : nil
-  end
-
-  def third_name=(third_name)
-    @third_name = third_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? third_name : nil
+    if telephone.to_s =~ /^+d{11}$/
+      @telephone = telephone
+    end
   end
 
   def telegram=(telegram)
-    @telegram = telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/ ? telegram : nil
+    if telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/
+      @telegram = telegram
+    end
   end
 
   def email=(email)
-    @email = email.to_s =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]{2,})\z/ ? email : nil
+    if email.to_s =~ /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
+      @email = email
+    end
   end
 
   def git=(git)
     @git = git.to_s =~ /^[a-zA-Z0-9_.+-]+$/ ? git : nil
   end
 
-  def id=(id)
-    @id = id.to_s =~ /^\d+$/ ? id : nil
+  def validate_contacts
+    raise 'Необходимо указать хотя бы один контакт' if @telephone.nil? && @telegram.nil? && @email.nil?
   end
+
+  def getInfo
+    contact_info = contact_method
+    "Имя: #{first_name}, Фамилия: #{second_name}, Отчество: #{last_name} (Git: #{@git}, Связь - #{contact_info})"
+  end
+
 end
