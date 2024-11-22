@@ -1,13 +1,11 @@
-require_relative 's1'
+require_relative 'student'
+require_relative 'student_short'
 
-student1 = Student.new(first_name: "Олег", second_name: "Воевода", third_name: "Олегович", id: 1, git: "Gite")
-student2 = Student.new(first_name: "Андрей", second_name: "Христофоров", third_name: "Баламутович", id: 10, git: "")
-student1.set_contacts(telephone: "+77543752543", telegram: "@shyguy", email: "imgonna@no.ru")
-if student1.validate()
-  puts"\n"
-  puts"у студента #{student1.first_name()} #{student1.second_name()} есть контакты(т.е. почта, телега и почта)"
-else
-  puts"у студента #{student1.first_name()} #{student1.second_name()} ничего нет."
-end
-puts student1.info
-puts student2.info
+student1 = Student.new(id: 1, second_name: 'Бурбуляров', first_name: 'Олег', last_name: 'Викторович', telephone: '+79161234567', git: 'github.com', email: 'mail@m.ru')
+  
+puts student1.getInfo
+  
+student_short1 = StudentShort.new(id: 2, student: student1)
+puts"\n"
+puts "Краткая информация о студенте:"
+puts "#{student_short1.initials} (Git: #{student_short1.git}, Связь - #{student_short1.contact})"
