@@ -15,8 +15,8 @@ class Student < Person
 
   def set_contacts(telephone: nil, telegram: nil, email: nil)
     self.telephone = telephone
-    @telegram = telegram
-    @email = email
+    self.telegram = telegram
+    self.email = email
     validate_contacts
   end
 
