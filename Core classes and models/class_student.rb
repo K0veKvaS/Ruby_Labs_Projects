@@ -1,49 +1,40 @@
 require_relative 'person'
 
 class Student < Person
-  attr_accessor :id, :git
+  attr_reader :telegram, :telephone, :email
 
-  def initialize(id:, second_name:, first_name:, last_name: nil, telephone: nil, telegram: nil, email: nil, git:)
-    super(second_name: second_name, first_name: first_name, last_name: last_name)
-    self.id = id
+# Конструктор для инициализации переменной студента, принимающая хэш определенных переменных, из которых обязательны составляющие: id, фамилия и имя
+  def initialize(id: nil, second_name:, first_name:, last_name: nil, telephone: nil, telegram: nil, email: nil, git: nil)
+    #Принцип наследования: вызов одноименного метода из родительского класса для переданных атрибутов
+    super(second_name: second_name, first_name: first_name, last_name: last_name, id: id, git: git)
     set_contacts(telephone: telephone, telegram: telegram, email: email)
-    self.git = git
-  end
-  def id=(id)
-    @id = id.to_s =~ /^\d+$/ ? id : nil
   end
 
   def set_contacts(telephone: nil, telegram: nil, email: nil)
-    self.telephone = telephone
-    self.telegram = telegram
-    self.email = email
-    validate_contacts
-  end
+    instance_variable_set("@telephone", telephone)
+    instance_variable_set("@email", email)
+    instance_variable_set("@telegram",telegram)
+    protected_methods
 
-  def telephone=(telephone)
-    if telephone.to_s =~ /^+d{11}$/
-      @telephone = telephone
+    def telephone=(telephone)
+      @telephone = telephone.to_s =~ /^\+\d{11}$/
     end
-  end
 
-  def telegram=(telegram)
-    if telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/
-      @telegram = telegram
+    def email=(email)
+      @email = email.to_s =~ /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
     end
-  end
 
-  def email=(email)
-    if email.to_s =~ /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
-      @email = email
+    def telegram=(telegram)
+      @telegram = telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/
     end
+
   end
 
-  def git=(git)
-    @git = git.to_s =~ /^[a-zA-Z0-9_.+-]+$/ ? git : nil
-  end
-
-  def validate_contacts
-    raise 'Необходимо указать хотя бы один контакт' if @telephone.nil? && @telegram.nil? && @email.nil?
+  def contact_method
+    return "Телефон: #{@telephone}" if @telephone
+    return "Telegram: #{@telegram}" if @telegram
+    return "Email: #{@email}" if @email
+    "Контактная информация недоступна"
   end
 
   def getInfo
@@ -51,4 +42,7 @@ class Student < Person
     "Имя: #{first_name}, Фамилия: #{second_name}, Отчество: #{last_name} (Git: #{@git}, Связь - #{contact_info})"
   end
 
+  def get_initials
+    "#{first_name[0]}.#{last_name ? last_name[0] + '.' : ''}"
+  end
 end
