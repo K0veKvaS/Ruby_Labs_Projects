@@ -8,4 +8,4 @@ puts student1.getInfo
 student_short1 = StudentShort.new(id: 2, student: student1)
 puts"\n"
 puts "Краткая информация о студенте:"
-puts "#{student_short1.initials} (Git: #{student_short1.git}, Связь - #{student_short1.contact})"
+puts student_short.getInfo
