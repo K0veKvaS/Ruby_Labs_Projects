@@ -1,10 +1,20 @@
 class Person
-  attr_accessor :second_name, :first_name, :last_name
+  attr_reader :second_name, :first_name, :last_name, :id, :git
 
-  def initialize(second_name:, first_name:, last_name: nil)
+  def initialize(second_name:, first_name:, last_name: nil, id: nil, git: nil)
     self.second_name = second_name
     self.first_name = first_name
     self.last_name = last_name
+    self.id = id
+    self.git = git
+  end
+
+  def id=(id)
+    @id = id.to_s =~ /^\d+$/ ? id : nil
+  end
+
+  def git=(git)
+    @git = git.to_s =~ /^[a-zA-Z0-9_.+-]+$/ ? git : nil
   end
 
   def first_name=(first_name)
@@ -23,16 +33,7 @@ class Person
     "#{@second_name} #{initials_string}"
   end
 
-  private
   def initials_string
     "#{@first_name[0]}.#{@last_name ? " #{@last_name[0]}" : ''}."
-  end
-
-  protected
-  def contact_method
-    return "Телефон: #{@telephone}" if @telephone
-    return "Telegram: #{@telegram}" if @telegram
-    return "Email: #{@email}" if @email
-    "Контактная информация недоступна"
   end
 end
