@@ -28,12 +28,4 @@ class Person
   def last_name=(last_name)
     @last_name = last_name.to_s =~ /^[A-Za-zА-Яа-яЁё'-]+$/ ? last_name : nil
   end
-
-  def initials
-    "#{@second_name} #{initials_string}"
-  end
-
-  def initials_string
-    "#{@first_name[0]}.#{@last_name ? " #{@last_name[0]}" : ''}."
-  end
 end
