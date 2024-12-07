@@ -15,19 +15,6 @@ class Student < Person
     instance_variable_set("@email", email)
     instance_variable_set("@telegram",telegram)
     protected_methods
-
-    def telephone=(telephone)
-      @telephone = telephone.to_s =~ /^\+\d{11}$/
-    end
-
-    def email=(email)
-      @email = email.to_s =~ /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
-    end
-
-    def telegram=(telegram)
-      @telegram = telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/
-    end
-
   end
 
   def contact_method
@@ -42,7 +29,24 @@ class Student < Person
     "Имя: #{first_name}, Фамилия: #{second_name}, Отчество: #{last_name} (Git: #{@git}, Связь - #{contact_info})"
   end
 
-  def get_initials
-    "#{first_name[0]}.#{last_name ? last_name[0] + '.' : ''}"
+  def initials
+    "#{@second_name} #{initials_string}"
+  end
+
+  def initials_string
+    "#{@first_name[0]}.#{@last_name ? " #{@last_name[0]}" : ''}."
+  end
+  
+    private 
+  def telephone=(telephone)
+    @telephone = telephone.to_s =~ /^\+\d{11}$/
+  end
+
+  def email=(email)
+    @email = email.to_s =~ /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/
+  end
+
+  def telegram=(telegram)
+    @telegram = telegram.to_s =~ /^@[a-zA-Z0-9_]{5,32}$/
   end
 end
