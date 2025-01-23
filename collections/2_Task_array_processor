@@ -1,0 +1,22 @@
+class ArrayProcessor
+  def initialize(array)
+    @array = array.freeze
+  end
+
+  def each(&block)
+    @array.each(&block)
+  end
+
+  def cycle(n = nil, &block)
+    return enum_for(:cycle, n) unless block_given? # объект Enumerator(проход по элементам по результатам cycle)
+    
+    n ||= Float::INFINITY
+    count = 0
+    while count < n
+      @array.each do |element|
+        yield element #передаем блок с текущим элементом
+        count += 1
+        break if count >= n
+      end
+    end
+  end
