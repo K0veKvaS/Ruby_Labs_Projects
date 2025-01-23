@@ -41,3 +41,7 @@ class ArrayProcessor
     sorted_array = @array.map { |element| [yield(element), element] } #каждый элемент — это массив из двух элементов: результат вызова блока и сам элемент
     sorted_array.sort_by!(&:first).map(&:last) #возрват элементов(вторые элементы пар)
   end
+
+  def each_slice(slice_size, &block)
+    @array.each_slice(slice_size, &block)
+  end
