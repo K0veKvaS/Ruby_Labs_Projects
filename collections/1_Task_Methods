@@ -5,3 +5,8 @@ def swap_min_max(arr)
   arr[min_index], arr[max_index] = arr[max_index], arr[min_index]
   arr
 end
+
+def max_in_interval?(arr, a, b)
+  max_value = arr.max
+  arr.any? { |num| num == max_value && num.between?(a, b) }
+end
