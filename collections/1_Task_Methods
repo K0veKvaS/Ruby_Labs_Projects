@@ -16,3 +16,8 @@ def average_of_absolute_values(arr)
   sum = arr.inject(0) { |acc, num| acc + num.abs }
   sum.to_f / arr.size
 end
+
+def filter_above_average(arr)
+  avg = average_of_absolute_values(arr)
+  arr.select { |num| num > avg }
+end
