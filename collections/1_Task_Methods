@@ -10,3 +10,9 @@ def max_in_interval?(arr, a, b)
   max_value = arr.max
   arr.any? { |num| num == max_value && num.between?(a, b) }
 end
+
+def average_of_absolute_values(arr)
+  return 0 if arr.empty?
+  sum = arr.inject(0) { |acc, num| acc + num.abs }
+  sum.to_f / arr.size
+end
