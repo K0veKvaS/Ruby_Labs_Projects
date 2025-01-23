@@ -36,3 +36,8 @@ class ArrayProcessor
     end
     result
   end
+
+  def sort_by(&block)
+    sorted_array = @array.map { |element| [yield(element), element] } #каждый элемент — это массив из двух элементов: результат вызова блока и сам элемент
+    sorted_array.sort_by!(&:first).map(&:last) #возрват элементов(вторые элементы пар)
+  end
