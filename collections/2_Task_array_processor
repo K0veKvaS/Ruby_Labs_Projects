@@ -28,3 +28,11 @@ class ArrayProcessor
     end
     accumulator
   end
+
+  def reject(&block)
+    result = []
+    @array.each do |element|
+      result << element unless yield(element) #добавляем элемент если блок returns False
+    end
+    result
+  end
