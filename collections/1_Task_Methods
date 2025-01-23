@@ -1,0 +1,7 @@
+def swap_min_max(arr)
+  min_index = arr.each_with_index.inject { |min, (value, index)| value < min[0] ? [value, index] : min }[1]
+  max_index = arr.each_with_index.inject { |max, (value, index)| value > max[0] ? [value, index] : max }[1]
+
+  arr[min_index], arr[max_index] = arr[max_index], arr[min_index]
+  arr
+end
