@@ -20,3 +20,11 @@ class ArrayProcessor
       end
     end
   end
+
+  def inject(initial = nil, &block)
+    accumulator = initial.nil? ? @array.first : initial
+    @array.each do |element|
+      accumulator = yield(accumulator, element) #Вызов блока с аккумулятором и текущим элементом, обновляя значение аккумулятора
+    end
+    accumulator
+  end
