@@ -1,0 +1,46 @@
+require_relative 'block_arg'
+
+def display_menu
+  puts "Выберите задачу:"
+  puts "1. Поменять местами минимальный и максимальный элементы массива."
+  puts "2. Проверить наличие максимального элемента массива в интервале a..b."
+  puts "3. Найти среднее арифметическое модулей элементов массива."
+  puts "4. Построить новый список с элементами, большими, чем среднее арифметическое значение."
+  puts "0. Выход."
+end
+
+def get_array_from_input
+  puts "Введите целочисленный массив через пробел:"
+  gets.chomp.split.map(&:to_i)
+end
+
+loop do
+  display_menu
+  choice = gets.chomp.to_i
+
+  case choice
+  when 1
+    arr = get_array_from_input
+    result = swap_min_max(arr)
+    puts "Массив после замены: #{result}"
+  when 2
+    arr = get_array_from_input
+    puts "Введите интервал a и b через пробел:"
+    a, b = gets.chomp.split.map(&:to_i)
+    exists = max_in_interval?(arr, a, b)
+    puts exists ? "Максимальный элемент находится в интервале." : "Максимального элемента в интервале нет."
+  when 3
+    arr = get_array_from_input
+    average = average_of_absolute_values(arr)
+    puts "Среднее арифметическое модулей элементов: #{average}"
+  when 4
+    arr = get_array_from_input
+    result = filter_above_average(arr)
+    puts "Элементы, большие среднего арифметического: #{result}"
+  when 0
+    puts "Выход из программы."
+    break
+  else
+    puts "Некорректный выбор. Попробуйте снова."
+  end
+end
