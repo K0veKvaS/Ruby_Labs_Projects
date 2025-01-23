@@ -45,3 +45,21 @@ class ArrayProcessor
   def each_slice(slice_size, &block)
     @array.each_slice(slice_size, &block)
   end
+
+  def max_by(&block)
+    return nil if @array.empty?
+
+    max_element = @array.first
+    max_value = yield(max_element)
+
+    @array.each do |element|
+      value = yield(element)
+      if value > max_value
+        max_value = value
+        max_element = element
+      end
+    end
+
+    max_element
+  end
+end
